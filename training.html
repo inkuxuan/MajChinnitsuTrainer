@@ -25,7 +25,12 @@
 </head>
 <body>
 <a class="btn btn-primary" href="index.html">返回</a>
-<div class="card m-3">
+<button id="view_stock_btn" class="btn btn-info" onclick="viewLog()"
+        data-toggle="modal" data-target="#modal">
+	查看牌谱
+</button>
+<a class="btn btn-primary" href="javascript:location.reload();">重来</a>
+<div class="card m-3" id="main_card">
 	<div id="card_title" class="card-header">
 		<h4 class="card-title">牌山剩余 <span id="remainder"></span></h4>
 	</div>
@@ -47,6 +52,29 @@
 		<img id="card14" src="images/5m.png" alt="" onclick="onClickCard(14)">
 	</div>
 </div>
+<div class="modal fade" id="modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<!-- 模态框头部 -->
+			<div class="modal-header">
+				<h4 class="modal-title">记录</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+
+			<!-- 模态框主体 -->
+			<div id="log_content" class="modal-body">
+
+			</div>
+
+			<!-- 模态框底部 -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+			</div>
+
+		</div>
+	</div>
+</div>
 <script src="js/replaceAll.js"></script>
 <script src="js/card_set.js"></script>
 <script>
@@ -59,6 +87,7 @@
     let logs = "";
 
     $(document).ready(function () {
+        setUpScale();
         card_color = localStorage.getItem("card_type");
         if (card_color == null)
             card_color = "m";
@@ -68,6 +97,12 @@
         initLog();
         updateUI();
     });
+
+    function setUpScale(){
+        let maincard = $("#main_card");
+        let cardwidth = maincard.width();
+
+    }
 
     function updateUI() {
         //i 手牌位置 0-8(1-9)
@@ -131,8 +166,15 @@
         hand_card.sort();
         hand_card.push(pile[pile_pos]);
         logs += "kiri" + kiri[0] + " tsumo" + pile[pile_pos];
+        logs += "\n";
+        console.log("kiri" + kiri[0] + " tsumo" + pile[pile_pos]);
         pile_pos++;
         updateUI();
+    }
+
+    function viewLog(){
+        let log_text = logs.replaceAll("\n", "<br>");
+        $("#log_content").html(log_text);
     }
 
 </script>
