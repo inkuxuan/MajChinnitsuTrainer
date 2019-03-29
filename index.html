@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-touch-fullscreen" content="no">
+	<link rel="shortcut icon" href="./favicon.ico">
+	<title>清一色训练</title>
+	<script src="js/jquery-3.3.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+</head>
+<body>
+<div class="jumbotron text-center">
+	<h1 class="display-3">清一色训练</h1>
+</div>
+<div class="card m-3">
+	<div class="card-header">
+		<h4 class="card-title">配置</h4>
+	</div>
+	<div id="conf_div" class="card-body">
+		<div class="row">
+			<div class="col-lg-2 m-auto">
+				<label for="card_type" class="col-form-label">花色</label>
+				<select name="card_type" id="card_type" class="form-control d-inline">
+					<option value="m">万</option>
+					<option value="p">饼</option>
+					<option value="s">索</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<button id="draw_button" onclick="start()"
+	        class="btn btn-lg btn-block btn-primary mt-1">训练开始
+	</button>
+</div>
+<script>
+
+
+    function start(){
+        let type = $("#card_type").val();
+        localStorage.setItem("card_type", type);
+        location.href="training.html";
+    }
+</script>
+</body>
+</html>

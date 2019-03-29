@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-touch-fullscreen" content="no">
+	<link rel="shortcut icon" href="./favicon.ico">
+	<title>清一色训练</title>
+	<script src="js/jquery-3.3.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+	<style>
+		img {
+			margin: 0;
+		}
+
+		img:hover {
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+<a class="btn btn-primary" href="index.html">返回</a>
+<div class="card m-3">
+	<div id="card_title" class="card-header">
+		<h4 class="card-title">牌山剩余 <span id="remainder"></span></h4>
+	</div>
+	<div id="play_content" style="">
+		<img id="card01" src="images/1m.png" alt="" onclick="onClickCard(1)">
+		<img id="card02" src="images/1m.png" alt="" onclick="onClickCard(2)">
+		<img id="card03" src="images/1m.png" alt="" onclick="onClickCard(3)">
+		<img id="card04" src="images/2m.png" alt="" onclick="onClickCard(4)">
+		<img id="card05" src="images/3m.png" alt="" onclick="onClickCard(5)">
+		<img id="card06" src="images/4m.png" alt="" onclick="onClickCard(6)">
+		<img id="card07" src="images/5m.png" alt="" onclick="onClickCard(7)">
+		<img id="card08" src="images/6m.png" alt="" onclick="onClickCard(8)">
+		<img id="card09" src="images/7m.png" alt="" onclick="onClickCard(9)">
+		<img id="card10" src="images/8m.png" alt="" onclick="onClickCard(10)">
+		<img id="card11" src="images/9m.png" alt="" onclick="onClickCard(11)">
+		<img id="card12" src="images/9m.png" alt="" onclick="onClickCard(12)">
+		<img id="card13" src="images/9m.png" alt="" onclick="onClickCard(13)">
+		<span>ツモ</span>
+		<img id="card14" src="images/5m.png" alt="" onclick="onClickCard(14)">
+	</div>
+</div>
+<script src="js/replaceAll.js"></script>
+<script src="js/card_set.js"></script>
+<script>
+
+    let hand_card = [];
+    let pile = [];
+    let pile_pos = 0;
+    let card_color = "m";
+    let all_card_amt = card_set.length;
+    let logs = "";
+
+    $(document).ready(function () {
+        card_color = localStorage.getItem("card_type");
+        if (card_color == null)
+            card_color = "m";
+        setUpPile();
+        setUpHandCards();
+        sortHandCards();
+        initLog();
+        updateUI();
+    });
+
+    function updateUI() {
+        //i 手牌位置 0-8(1-9)
+        for (let i = 0; i < 9; i++) {
+            $("#card0" + (i + 1)).attr("src", "images/" + hand_card[i] + card_color + ".png");
+        }
+        //(9-13, 10-14)
+        for (let i = 9; i < 14; i++) {
+            $("#card" + (i + 1)).attr("src", "images/" + hand_card[i] + card_color + ".png");
+        }
+
+        $("#remainder").html(pile.length - pile_pos);
+    }
+
+    function initLog() {
+        for (let i = 0; i < hand_card.length; i++) {
+            logs += hand_card[i].toString();
+        }
+        logs += "\n";
+        console.log("初始手牌 " + logs);
+    }
+
+    function sortHandCards() {
+        hand_card.sort();
+    }
+
+    function setUpHandCards() {
+        let i = 14;
+        while (i--) {
+            hand_card.push(pile[pile_pos]);
+            pile_pos++;
+        }
+    }
+
+    function setUpPile() {
+        pile_pos = 0;
+        hand_card = [];
+        let i = all_card_amt;
+        while (i--)
+            pile[i] = card_set[i];
+        i = all_card_amt * 5;
+        while (i--) {
+            let index0 = parseInt(Math.random() * all_card_amt);
+            let index1 = parseInt(Math.random() * all_card_amt);
+            swapPile(index0, index1);
+        }
+        console.log("初始牌山 " + pile);
+    }
+
+    function swapPile(index0, index1) {
+        let temp = pile[index0];
+        pile[index0] = pile[index1];
+        pile[index1] = temp;
+    }
+
+    function onClickCard(index) {
+        index--;
+        if (pile.length === pile_pos)
+            return;
+        let kiri = hand_card.splice(index, 1);
+        hand_card.sort();
+        hand_card.push(pile[pile_pos]);
+        logs += "kiri" + kiri[0] + " tsumo" + pile[pile_pos];
+        pile_pos++;
+        updateUI();
+    }
+
+</script>
+</body>
+</html>
